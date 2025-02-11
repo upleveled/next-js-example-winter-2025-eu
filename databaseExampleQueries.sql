@@ -20,13 +20,13 @@ INSERT INTO
   )
 VALUES
   (
-    'hehehhee',
+    'Lucia',
     'Cat',
     'House',
     '1999-06-23'
   ),
   (
-    'hehhehehek',
+    'Bili',
     'Capybaras',
     'Car',
     '2020-06-23'
