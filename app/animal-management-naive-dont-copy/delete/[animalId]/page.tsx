@@ -1,7 +1,13 @@
 import { notFound } from 'next/navigation';
 import { deleteAnimalInsecure } from '../../../../database/animals';
 
-export default async function AnimalNaiveDeletePage(props) {
+type Props = {
+  params: Promise<{
+    animalId: string;
+  }>;
+};
+
+export default async function AnimalNaiveDeletePage(props: Props) {
   const animal = await deleteAnimalInsecure({
     id: Number((await props.params).animalId),
   });
