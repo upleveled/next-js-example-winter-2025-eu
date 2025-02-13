@@ -11,7 +11,7 @@ export default function CookieBanner() {
   useEffect(() => {
     const localStorageValue = getLocalStorage('cookiePolicy');
     if (localStorageValue) {
-      setAreCookiesAccepted(parseJson(localStorageValue));
+      setAreCookiesAccepted(parseJson(localStorageValue) as boolean);
     } else {
       setAreCookiesAccepted(false);
     }

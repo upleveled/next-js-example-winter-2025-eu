@@ -3,7 +3,16 @@ import { createAnimalInsecure } from '../../../database/animals';
 
 // ?firstName=Boby&type=Dog&accessory=Bike&birthDate=1990-06-23
 
-export default async function CreateAnimalNaivePage(props) {
+type Props = {
+  searchParams: Promise<{
+    firstName: string;
+    type: string;
+    accessory: string;
+    birthDate: string;
+  }>;
+};
+
+export default async function CreateAnimalNaivePage(props: Props) {
   const animalSearchParams = await props.searchParams;
 
   const animal = await createAnimalInsecure({

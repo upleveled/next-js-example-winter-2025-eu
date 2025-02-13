@@ -1,10 +1,17 @@
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import {
   getAnimalsFoodsInsecure,
   getAnimalWithFoodsInsecure,
 } from '../../../../database/animals';
 
-export default async function AnimalFoodPage(props) {
+type Props = {
+  params: Promise<{
+    animalId: string;
+  }>;
+};
+
+export default async function AnimalFoodPage(props: Props) {
   const animalsFoods = await getAnimalsFoodsInsecure(
     Number((await props.params).animalId),
   );
@@ -14,6 +21,10 @@ export default async function AnimalFoodPage(props) {
   );
 
   const animal = animalsFoods[0];
+
+  if (!animal || !animalWithFoodsArray) {
+    notFound();
+  }
 
   const animalWithFoods = {
     id: animal.animalId,

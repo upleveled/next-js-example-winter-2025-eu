@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import type { Fruit } from '../../../database/fruits';
 import { getCookie } from '../../../util/cookies';
 import { parseJson } from '../../../util/json';
 
@@ -8,16 +9,24 @@ import { parseJson } from '../../../util/json';
 // Case B: cookie set, id doesn't exist
 // Case C: cookie set, id exists already
 
-export async function createOrUpdateCookie(fruitId, comment) {
+export type FruitComment = {
+  id: number;
+  comment: string;
+};
+
+export async function createOrUpdateCookie(
+  fruitId: Fruit['id'],
+  comment: FruitComment['comment'],
+) {
   // 1. get current cookie
-  const fruitsCommentsCookie = getCookie('fruitComments');
+  const fruitsCommentsCookie = await getCookie('fruitComments');
 
   // 2. parse the cookie value
   const fruitComments =
     fruitsCommentsCookie === 'undefined'
       ? // Case A: cookie is undefined
         []
-      : parseJson(fruitsCommentsCookie) || [];
+      : (parseJson(fruitsCommentsCookie) as FruitComment[] | undefined) || [];
 
   // 3. find cookie value
   const fruitToUpdate = fruitComments.find((fruitComment) => {
@@ -25,7 +34,10 @@ export async function createOrUpdateCookie(fruitId, comment) {
   });
 
   if (!fruitToUpdate) {
-    fruitComments.push({ id: fruitId, comment: comment });
+    fruitComments.push({
+      id: fruitId,
+      comment: comment,
+    });
   } else {
     fruitToUpdate.comment = comment;
   }

@@ -5,14 +5,20 @@ import { getCookie } from '../../../util/cookies';
 import { parseJson } from '../../../util/json';
 import FruitCommentForm from './FruitCommentForm';
 
-export default async function SingleFruitsPage(props) {
+type Props = {
+  params: Promise<{
+    fruitId: string;
+  }>;
+};
+
+export default async function SingleFruitsPage(props: Props) {
   const fruit = getFruit(Number((await props.params).fruitId));
 
   if (!fruit) {
     notFound();
   }
 
-  const fruitCommentsCookie = getCookie('fruitComments');
+  const fruitCommentsCookie = await getCookie('fruitComments');
 
   let fruitComments = parseJson(fruitCommentsCookie) || [];
 
