@@ -96,7 +96,7 @@ test('navigation test', async ({ page }) => {
 
   await expect(
     page.locator(
-      'div:has(a:has-text("Apple")) >> div:has-text("This is a comment")',
+      'div:has(a:has-text("Apple")) > div:text("This is a comment")',
     ),
   ).toBeVisible();
 });
