@@ -4,6 +4,7 @@ import {
   getAnimalsFoodsInsecure,
   getAnimalWithFoodsInsecure,
 } from '../../../../database/animals';
+import { reduceAnimalsWithFoods } from '../../../../util/dataStructures';
 
 type Props = {
   params: Promise<{
@@ -20,45 +21,28 @@ export default async function AnimalFoodPage(props: Props) {
     Number((await props.params).animalId),
   );
 
-  const animal = animalsFoods[0];
-
-  if (!animal || !animalWithFoodsArray) {
+  if (!animalsFoods[0] || !animalWithFoodsArray) {
     notFound();
   }
 
-  const animalWithFoods = {
-    id: animal.animalId,
-    firstName: animal.animalFirstName,
-    type: animal.animalType,
-    accessory: animal.animalAccessory,
-    birthDate: animal.animalBirthDate,
-    animalFoods: animalsFoods.map((animalFood) => {
-      return {
-        id: animalFood.animalFoodId,
-        name: animalFood.animalFoodName,
-        type: animalFood.animalFoodType,
-      };
-    }),
-  };
+  const animalFoods = reduceAnimalsWithFoods(animalsFoods);
 
   return (
     <div>
-      <h1>
-        {animalWithFoods.firstName} (using data transformation in JavaScript)
-      </h1>
+      <h1>{animalFoods.firstName} (using data transformation in JavaScript)</h1>
       <Image
-        src={`/images/${animalWithFoods.firstName.toLowerCase()}.webp`}
-        alt={`A picture of ${animalWithFoods.firstName}`}
+        src={`/images/${animalFoods.firstName.toLowerCase()}.webp`}
+        alt={`A picture of ${animalFoods.firstName}`}
         width={200}
         height={200}
       />
       <p>
-        This is a {animalWithFoods.type} carrying a {animalWithFoods.accessory}
+        This is a {animalFoods.type} carrying a {animalFoods.accessory}
       </p>
       <br />
       Who likes:
       <ul>
-        {animalWithFoods.animalFoods.map((animalFood) => {
+        {animalFoods.animalFoods.map((animalFood) => {
           return (
             <li key={`animal-with-foods-${animalFood.name}-${animalFood.id}`}>
               {animalFood.name}
