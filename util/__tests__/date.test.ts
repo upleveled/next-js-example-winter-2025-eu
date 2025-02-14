@@ -29,17 +29,17 @@ test('format date handles leap years correctly', () => {
 
 test('throws an error when formatDate is given invalid inputs', () => {
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate(false)).toThrow('Pass only dates!');
+  expect(() => formatDate(false)).toThrow('Pass only Dates!');
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate(null)).toThrow('Pass only dates!');
+  expect(() => formatDate(null)).toThrow('Pass only Dates!');
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate(undefined)).toThrow('Pass only dates!');
+  expect(() => formatDate(undefined)).toThrow('Pass only Dates!');
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate('2024-02-07')).toThrow('Pass only dates!');
+  expect(() => formatDate('2024-02-07')).toThrow('Pass only Dates!');
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate(1700000000000)).toThrow('Pass only dates!');
+  expect(() => formatDate(1700000000000)).toThrow('Pass only Dates!');
   // @ts-expect-error Test for invalid parameter type
-  expect(() => formatDate({})).toThrow('Pass only dates!');
+  expect(() => formatDate({})).toThrow('Pass only Dates!');
 });
 
 test('calculate days until next birthday correctly', () => {
@@ -67,32 +67,32 @@ test('calculate days until next birthday correctly', () => {
 test('throws an error when getDaysUntilNextBirthDay is given invalid inputs', () => {
   // @ts-expect-error Test for invalid parameter type
   expect(() => getDaysUntilNextBirthDay('123', new Date('2024-02-07'))).toThrow(
-    'Pass only dates!',
+    'Pass only Dates!',
   );
 
   // @ts-expect-error Test for invalid parameter type
   expect(() => getDaysUntilNextBirthDay(null, new Date('2024-02-07'))).toThrow(
-    'Pass only dates!',
+    'Pass only Dates!',
   );
 
   expect(() =>
     // @ts-expect-error Test for invalid parameter type
     getDaysUntilNextBirthDay(undefined, new Date('2024-02-07')),
-  ).toThrow('Pass only dates!');
+  ).toThrow('Pass only Dates!');
 
   // @ts-expect-error Test for invalid parameter type
   expect(() => getDaysUntilNextBirthDay(new Date('2024-02-07'), {})).toThrow(
-    'Pass only dates!',
+    'Pass only Dates!',
   );
 
   // @ts-expect-error Test for invalid parameter type
   expect(() => getDaysUntilNextBirthDay(new Date('2024-02-07'), [])).toThrow(
-    'Pass only dates!',
+    'Pass only Dates!',
   );
 });
 
 test('throws an error when birth date is in the future', () => {
   expect(() =>
     getDaysUntilNextBirthDay(new Date('2024-02-07'), new Date('2025-02-07')),
-  ).toThrow('Birth date must be before current date');
+  ).toThrow('Birth date must be before current date!');
 });
