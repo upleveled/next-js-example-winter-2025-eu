@@ -8,6 +8,8 @@ The Next.js example - Winter 2025 is a project that demonstrates how to use Next
 
 - Next.js
 - Postgres
+- Jest
+- Playwright
 
 ## Database Setup
 
@@ -77,4 +79,18 @@ psql -U <user name> <database name>
 
 ```bash
 sudo -u <user name> psql -U <user name> <database name>
+```
+
+## Tests
+
+### Jest
+
+```bash
+pnpm jest
+```
+
+### Playwright
+
+```bash
+pnpm playwright test
 ```

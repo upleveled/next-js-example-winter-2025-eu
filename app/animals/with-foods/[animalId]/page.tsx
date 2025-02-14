@@ -4,6 +4,7 @@ import {
   getAnimalsFoodsInsecure,
   getAnimalWithFoodsInsecure,
 } from '../../../../database/animals';
+import { reduceAnimalsWithFoods } from '../../../../util/dataStructure';
 
 type Props = {
   params: Promise<{
@@ -20,26 +21,15 @@ export default async function AnimalFoodPage(props: Props) {
     Number((await props.params).animalId),
   );
 
-  const animal = animalsFoods[0];
-
-  if (!animal || !animalWithFoodsArray) {
+  if (!animalsFoods[0] || !animalWithFoodsArray) {
     notFound();
   }
 
-  const animalWithFoods = {
-    id: animal.animalId,
-    firstName: animal.animalFirstName,
-    type: animal.animalType,
-    accessory: animal.animalAccessory,
-    birthDate: animal.animalBirthDate,
-    animalFoods: animalsFoods.map((animalFood) => {
-      return {
-        id: animalFood.animalFoodId,
-        name: animalFood.animalFoodName,
-        type: animalFood.animalFoodType,
-      };
-    }),
-  };
+  console.log(animalsFoods);
+
+  const animalWithFoods = reduceAnimalsWithFoods(animalsFoods);
+
+  console.log(animalWithFoods);
 
   return (
     <div>
