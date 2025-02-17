@@ -10,6 +10,7 @@ The Next.js example - Winter 2025 is a project that demonstrates how to use Next
 - Postgres
 - Jest
 - Playwright
+- Fly.io
 
 ## Database Setup
 
@@ -94,3 +95,7 @@ pnpm jest
 ```bash
 pnpm playwright test
 ```
+
+## Deployment
+
+Deployed the project on Fly.io
