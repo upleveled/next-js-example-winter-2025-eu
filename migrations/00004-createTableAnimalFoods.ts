@@ -28,7 +28,7 @@ export async function up(sql: Sql) {
     CREATE TABLE animals_foods (
       id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       animal_id integer NOT NULL REFERENCES animals (id) ON DELETE cascade,
-      food_id integer NOT NULL REFERENCES animals (id)
+      food_id integer NOT NULL REFERENCES foods (id)
     )
   `;
 }
