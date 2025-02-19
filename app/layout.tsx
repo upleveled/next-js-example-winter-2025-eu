@@ -41,6 +41,7 @@ export default function RootLayout(props: Props) {
               <Link href="/">Home</Link>
               <Link href="/about">About</Link>
               <Link href="/animals">Animals</Link>
+              <Link href="/animals/dashboard">Dashboard</Link>
               <Link href="/fruits">Fruits</Link>
             </nav>
           </div>
