@@ -4,8 +4,10 @@ import {
   getAnimalInsecure,
   updateAnimalInsecure,
 } from '../../../../database/animals';
-import type { Animal } from '../../../../migrations/00000-createTableAnimals';
-import { animalSchema } from '../route';
+import {
+  type Animal,
+  animalSchema,
+} from '../../../../migrations/00000-createTableAnimals';
 
 export type AnimalResponseBodyGet =
   | {
@@ -27,7 +29,7 @@ export async function GET(
   request: NextRequest,
   { params }: AnimalParams,
 ): Promise<NextResponse<AnimalResponseBodyGet>> {
-  const animal = await getAnimalInsecure(Number((await params).animalId));
+  const animal = await getAnimalInsecure(Number(params.animalId));
 
   if (!animal) {
     return NextResponse.json(
@@ -51,7 +53,7 @@ export async function DELETE(
   { params }: AnimalParams,
 ): Promise<NextResponse<AnimalResponseBodyDelete>> {
   const animal = await deleteAnimalInsecure({
-    id: Number((await params).animalId),
+    id: Number(params.animalId),
   });
 
   if (!animal) {
@@ -94,7 +96,7 @@ export async function PUT(
   }
 
   const updatedAnimal = await updateAnimalInsecure({
-    id: Number((await params).animalId),
+    id: Number(params.animalId),
     firstName: result.data.firstName,
     type: result.data.type,
     accessory: result.data.accessory || null,

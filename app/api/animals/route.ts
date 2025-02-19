@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
 import {
   createAnimalInsecure,
   getAnimalsInsecure,
 } from '../../../database/animals';
-import type { Animal } from '../../../migrations/00000-createTableAnimals';
+import {
+  type Animal,
+  animalSchema,
+} from '../../../migrations/00000-createTableAnimals';
 
 export type AnimalsResponseBodyGet = {
   animals: Animal[];
@@ -18,16 +20,6 @@ export type AnimalsResponseBodyPost =
       error: string;
     };
 
-export const animalSchema = z.object({
-  firstName: z.string(),
-  type: z.string(),
-  accessory: z.string().optional(),
-  // accessory: z.string().nullable()
-  // birthdate: z.date(), wrong
-  // We can use coerce method to convert the string to a date
-  birthDate: z.coerce.date(),
-});
-
 // WARNING: You don't need this, because in Next.js
 // you can use database queries directly in Server Components
 export async function GET(): Promise<NextResponse<AnimalsResponseBodyGet>> {
@@ -38,10 +30,14 @@ export async function GET(): Promise<NextResponse<AnimalsResponseBodyGet>> {
 export async function POST(
   request: Request,
 ): Promise<NextResponse<AnimalsResponseBodyPost>> {
+  // get body from client and parse it
   const requestBody = await request.json();
 
+  // validate information from client
   const result = animalSchema.safeParse(requestBody);
 
+  // If client sends request body with incorrect data,
+  // return a response with a 400 status code to the client
   if (!result.success) {
     return NextResponse.json(
       {
