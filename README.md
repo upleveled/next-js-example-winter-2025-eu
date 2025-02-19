@@ -3,6 +3,8 @@
 The Next.js example - Winter 2025 is a project that demonstrates how to use Next.js to build a full-stack web application. It is part of the curriculum for the [UpLeveled Fullstack Web Development Bootcamp](https://upleveled.io/web-development-bootcamp).
 
 ![alt text](./public/homepage.png)
+<img width="1466" alt="Screenshot 2025-02-19 at 13 46 29" src="https://github.com/user-attachments/assets/c90785b5-4d9c-4dec-98fa-d632b873ff5d" />
+
 
 ## Technologies
 
