@@ -5,7 +5,6 @@ The Next.js example - Winter 2025 is a project that demonstrates how to use Next
 ![alt text](./public/homepage.png)
 <img width="1466" alt="Screenshot 2025-02-19 at 13 46 29" src="https://github.com/user-attachments/assets/c90785b5-4d9c-4dec-98fa-d632b873ff5d" />
 
-
 ## Technologies
 
 - Next.js
@@ -101,3 +100,30 @@ pnpm playwright test
 ## Deployment
 
 Deployed the project on Fly.io
+
+## Authentication
+
+Some pages are protected with sessions and can only be accessed by authenticated users. User needs to login with username and password to be authenticated. Authenticated users can access the protected pages and perform CRUD operations on the animals.
+
+```ts
+export type User = {
+  id: number;
+  username: string;
+};
+
+type UserWithPasswordHash = User & {
+  passwordHash: string;
+};
+
+type Error = {
+  message: string;
+};
+```
+
+```ts
+- /api/(auth)/register
+  - POST   => User   | Error[]   (create user)
+
+- /api/(auth)/login
+  - POST   => User   | Error[]   (login user)
+```
