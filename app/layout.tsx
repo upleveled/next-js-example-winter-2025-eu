@@ -1,7 +1,10 @@
 import './globals.scss';
 import localFont from 'next/font/local';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { getUser } from '../database/users';
+import LogoutButton from './(auth)/logout/LogoutButton';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,7 +31,15 @@ type Props = {
   children: ReactNode;
 };
 
-export default function RootLayout(props: Props) {
+export default async function RootLayout(props: Props) {
+  // Task: Display the logged in user's username in the navigation bar and hide the login and register links depending on whether the user is logged in or not
+  // 1. Checking if the sessionToken cookie exists
+  const sessionTokenCookie = (await cookies()).get('sessionToken');
+
+  // 2. Get the current logged in user from the database using the sessionToken value
+  const user = sessionTokenCookie && (await getUser(sessionTokenCookie.value));
+
+  // 3. Make decision whether to show the login and register links or not
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
@@ -45,8 +56,19 @@ export default function RootLayout(props: Props) {
               <Link href="/fruits">Fruits</Link>
 
               <div>
-                <Link href="/login">Login</Link>
-                <Link href="/register">Register</Link>
+                {user ? (
+                  <>
+                    <Link href={`/profile/${user.username}`}>
+                      {user.username}
+                    </Link>
+                    <LogoutButton />
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login">Login</Link>
+                    <Link href="/register">Register</Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>

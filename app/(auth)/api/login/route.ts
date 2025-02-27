@@ -1,10 +1,14 @@
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { createSessionInsecure } from '../../../../database/sessions';
 import { getUserWithPasswordHashInsecure } from '../../../../database/users';
 import {
   type User,
   userSchema,
 } from '../../../../migrations/00006-createTableUsers';
+import { secureCookieOptions } from '../../../../util/cookies';
 
 export type LoginResponseBody =
   | {
@@ -70,6 +74,43 @@ export async function POST(
   }
 
   // At this stage we already confirm that the user is who they say they are
+
+  // 5. Create a token
+  const token = crypto.randomBytes(100).toString('base64');
+
+  // 6. Create the session record
+  const session = await createSessionInsecure(token, userWithPasswordHash.id);
+
+  if (!session) {
+    return NextResponse.json(
+      {
+        errors: [{ message: 'Session creation failed' }],
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  // 7. Send the new cookie in the headers
+
+  // (await cookies()).set({
+  //   name: 'sessionToken',
+  //   value: session.token,
+  //   httpOnly: true,
+  //   path: '/',
+  //   maxAge: 60 * 60 * 24, // Expires 24 hours
+  //   sameSite: 'lax',
+  //   secure: true,
+  // });
+
+  (await cookies()).set({
+    name: 'sessionToken',
+    value: session.token,
+    ...secureCookieOptions,
+  });
+
+  // 8. Return the new user information
   return NextResponse.json({
     user: {
       username: userWithPasswordHash.username,

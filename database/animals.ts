@@ -5,6 +5,7 @@ import type {
   AnimalsFoods,
   AnimalWithFoods,
 } from '../migrations/00004-createTableAnimalFoods';
+import type { Session } from '../migrations/00007-createTableSessions';
 
 // This is coming from the database now
 // const animals = [
@@ -52,6 +53,94 @@ import type {
 // export function getAnimal(id) {
 //   // return animals.find((animal) => animal.id === id);
 // }
+
+// Secure database queries start here
+// All queries not marked `Insecure` use session tokens to authenticate the user
+
+export const getAnimals = cache(async (sessionToken: Session['token']) => {
+  const animals = await sql<Animal[]>`
+    SELECT
+      animals.*
+    FROM
+      animals
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+      )
+  `;
+
+  return animals;
+});
+
+export const createAnimal = cache(
+  async (sessionToken: Session['token'], newAnimal: Omit<Animal, 'id'>) => {
+    const [animal] = await sql<Animal[]>`
+      INSERT INTO
+        animals (
+          first_name,
+          type,
+          accessory,
+          birth_date
+        ) (
+          SELECT
+            ${newAnimal.firstName},
+            ${newAnimal.type},
+            ${newAnimal.accessory},
+            ${newAnimal.birthDate}
+          FROM
+            sessions
+          WHERE
+            token = ${sessionToken}
+            AND sessions.expiry_timestamp > now()
+        )
+      RETURNING
+        animals.*
+    `;
+
+    return animal;
+  },
+);
+
+export const updateAnimal = cache(
+  async (sessionToken: Session['token'], updatedAnimal: Animal) => {
+    const [animal] = await sql<Animal[]>`
+      UPDATE animals
+      SET
+        first_name = ${updatedAnimal.firstName},
+        type = ${updatedAnimal.type},
+        accessory = ${updatedAnimal.accessory},
+        birth_date = ${updatedAnimal.birthDate}
+      FROM
+        sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND animals.id = ${updatedAnimal.id}
+      RETURNING
+        animals.*
+    `;
+    return animal;
+  },
+);
+
+export const deleteAnimal = cache(
+  async (sessionToken: Session['token'], id: number) => {
+    const [animal] = await sql<Animal[]>`
+      DELETE FROM animals USING sessions
+      WHERE
+        sessions.token = ${sessionToken}
+        AND sessions.expiry_timestamp > now()
+        AND animals.id = ${id}
+      RETURNING
+        animals.*
+    `;
+
+    return animal;
+  },
+);
+
+// Insecure database queries start here
+// All queries marked `Insecure` do not use session tokens to authenticate the user
 
 export const getAnimalsInsecure = cache(async () => {
   const animals = await sql<Animal[]>`

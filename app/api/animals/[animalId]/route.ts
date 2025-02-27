@@ -1,8 +1,9 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import {
-  deleteAnimalInsecure,
+  deleteAnimal,
   getAnimalInsecure,
-  updateAnimalInsecure,
+  updateAnimal,
 } from '../../../../database/animals';
 import {
   type Animal,
@@ -51,9 +52,14 @@ export async function DELETE(
   request: NextRequest,
   { params }: AnimalParams,
 ): Promise<NextResponse<AnimalResponseBodyDelete>> {
-  const animal = await deleteAnimalInsecure({
-    id: Number((await params).animalId),
-  });
+  const sessionTokenCookie = (await cookies()).get('sessionToken');
+
+  const animal =
+    sessionTokenCookie &&
+    (await deleteAnimal(
+      sessionTokenCookie.value,
+      Number((await params).animalId),
+    ));
 
   if (!animal) {
     return NextResponse.json(
@@ -94,13 +100,17 @@ export async function PUT(
     );
   }
 
-  const updatedAnimal = await updateAnimalInsecure({
-    id: Number((await params).animalId),
-    firstName: result.data.firstName,
-    type: result.data.type,
-    accessory: result.data.accessory || null,
-    birthDate: result.data.birthDate,
-  });
+  const sessionTokenCookie = (await cookies()).get('sessionToken');
+
+  const updatedAnimal =
+    sessionTokenCookie &&
+    (await updateAnimal(sessionTokenCookie.value, {
+      id: Number((await params).animalId),
+      firstName: result.data.firstName,
+      type: result.data.type,
+      accessory: result.data.accessory || null,
+      birthDate: result.data.birthDate,
+    }));
 
   if (!updatedAnimal) {
     return NextResponse.json(
