@@ -43,8 +43,6 @@ export async function POST(
     result.data.username,
   );
 
-  console.log('userWithPasswordHash', userWithPasswordHash);
-
   if (!userWithPasswordHash) {
     return NextResponse.json(
       {
