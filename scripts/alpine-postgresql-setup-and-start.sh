@@ -8,9 +8,8 @@ echo "Setting up PostgreSQL on Alpine Linux..."
 export PGHOST=/postgres-volume/run/postgresql
 export PGDATA="$PGHOST/data"
 
-# If the project requires additional environment variables beyond PGHOST, PGDATABASE, PGUSERNAME, and PGPASSWORD,
-# add them to the array below. Example:
-# echo '[ "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET" ]'
+# If the project has more environment variables then PGHOST, PGDATABASE, PGUSERNAME and PGPASSWORD, add them to the Array below
+# e.g. echo '[ "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET" ]'
 echo "PREFLIGHT_ENVIRONMENT_VARIABLES:"
 echo '[]'
 
@@ -27,8 +26,9 @@ echo "Enabling connections on all available IP interfaces..."
 echo "listen_addresses='*'" >> "$PGDATA/postgresql.conf"
 
 echo "Starting PostgreSQL..."
-pg_ctl start --pgdata="$PGDATA" --log="/tmp/postgres_startup.log"
-cat "/tmp/postgres_startup.log"
+pg_ctl start --pgdata="$PGDATA" --log="/tmp/postgresql-server-start.log"
+sleep 1
+cat "/tmp/postgresql-server-start.log"
 
 echo "Creating database, user and schema..."
 psql -U postgres postgres << SQL
