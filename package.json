@@ -28,7 +28,7 @@
   "devDependencies": {
     "@jest/globals": "30.0.0-alpha.7",
     "@playwright/test": "^1.50.1",
-    "@ts-safeql/eslint-plugin": "^3.6.6",
+    "@ts-safeql/eslint-plugin": "^4.0.1",
     "@types/bcrypt": "5.0.2",
     "@types/dotenv-safe": "8.1.6",
     "@types/node": "^22.13.1",
@@ -36,10 +36,10 @@
     "@types/react-dom": "^19.0.3",
     "esbuild-register": "3.6.0",
     "eslint": "^9.19.0",
-    "eslint-config-upleveled": "^9.1.2",
+    "eslint-config-upleveled": "^9.4.0",
     "jest": "30.0.0-alpha.7",
     "jest-environment-jsdom": "30.0.0-alpha.7",
-    "libpg-query": "16.2.0",
+    "libpg-query": "17.6.0",
     "prettier": "^3.4.2",
     "prettier-plugin-embed": "^0.4.15",
     "prettier-plugin-sql": "^0.18.1",
@@ -47,14 +47,5 @@
     "stylelint-config-upleveled": "^1.1.9",
     "typescript": "^5.7.3"
   },
-  "packageManager": "pnpm@10.3.0+sha512.ee592eda8815a8a293c206bb0917c4bb0ff274c50def7cbc17be05ec641fc2d1b02490ce660061356bd0d126a4d7eb2ec8830e6959fb8a447571c631d5a2442d",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "bcrypt",
-      "esbuild",
-      "libpg-query",
-      "sharp"
-    ]
-  }
+  "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
 }
