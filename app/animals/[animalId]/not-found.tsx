@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'Animal not found',
+};
+
 export default function AnimalNotFound() {
   // You can add any UI inside RootNotFound, including
   // Animations.
